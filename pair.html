@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bhashi Pair Code Generator 🤖</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background: linear-gradient(45deg, #000000, #1a0000);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .box {
+      width: 340px;
+      height: 400px;
+      padding: 30px;
+      position: relative;
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 0, 0, 0.3);
+      box-shadow: 0 0 30px rgba(255, 0, 0, 0.3),
+                  inset 0 0 20px rgba(255, 0, 0, 0.2);
+      animation: glowingBorder 2s infinite alternate;
+    }
+
+    @keyframes glowingBorder {
+      from {
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.3),
+                    inset 0 0 10px rgba(255, 0, 0, 0.2);
+      }
+      to {
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.5),
+                    inset 0 0 20px rgba(255, 0, 0, 0.4);
+      }
+    }
+
+    .title {
+      color: #fff;
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    }
+
+    .subtitle {
+      color: #ff3333;
+      font-size: 1.2em;
+      margin-bottom: 30px;
+    }
+
+    .input-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .input-container input {
+      padding: 15px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 0, 0, 0.3);
+      color: #fff;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .input-container input:focus {
+      outline: none;
+      border-color: #ff0000;
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .input-container button {
+      padding: 15px;
+      border-radius: 10px;
+      background: linear-gradient(45deg, #ff0000, #cc0000);
+      border: none;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .input-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 0, 0, 0.4);
+    }
+
+    .footer {
+      margin-top: 20px;
+      color: #999;
+      font-size: 0.9em;
+    }
+
+    #pair {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+
+    #copy {
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+    }
+
+    #copy:hover {
+      background: rgba(255, 0, 0, 0.1);
+    }
+
+    .emoji {
+      font-size: 1.5em;
+      margin: 10px 0;
+    }
+
+    @media (max-width: 500px) {
+      .box {
+        width: 90%;
+        height: auto;
+        min-height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box" id="box">
+      <div id="text">
+        <div class="emoji">🤖</div>
+        <h2 class="title">BHASHI PAIR CODE</h2>
+        <p class="subtitle">Presented by Bhashi Team ⚡</p>
+        <div class="input-container">
+          <input type="number" id="number" placeholder="Enter WhatsApp number (e.g., 94xxxxxxxxx)" />
+          <button id="submit">Generate Code 🔑</button>
+        </div>
+        <div id="pair"></div>
+        <div class="footer">
+          <p>© 2024 Bhashi Team | All Rights Reserved</p>
+          <p>Enhanced Security & Performance ✨</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+    let box = document.getElementById("box");
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
+      obj.innerText = "✅ COPIED";
+      obj.style = "color:#00ff00;font-weight:bold";
+      setTimeout(() => {
+        obj.innerText = text;
+        obj.style = "color:#fff;font-weight:bold";
+      }, 500);
+      }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = '<a style="color:black;font-weight:bold">⚠️ Enter your WhatsApp number with country code</a><br><br>';
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = '<a style="color:black;font-weight:bold">⚠️ Invalid number format</a><br><br>';
+      } else {
+        const bc = c.value.replace(/[^0-9]/g, "");
+        let bb = "";
+        let bbc = "";
+        const cc = bc.split('');
+        cc.map(a => {
+          bbc += a;
+          if (bbc.length == 3) {
+            bb += " " + a;
+          } else if (bbc.length == 8) {
+            bb += " " + a;
+          } else {
+            bb += a;
+          }
+        });
+        c.type = "text";
+        c.value = "+" + bb;
+        c.style = "color:black;font-size:20px";
+        a.innerHTML = '<a style="color:black;font-weight:bold">Please wait for some time</a><br><br>';
+        let { data } = await axios(`/code?number=${bc}`);
+        let code = data.code || "Service Unavailable";
+        a.innerHTML = '<font id="copy" onclick="Copy()" style="color:red;font-weight:bold" size="5">CODE : <span style="color:black;font-weight:bold">' + code + '</span></font><br><br><br>';
+      }
+    });
+  </script>
+</body>
+</html>

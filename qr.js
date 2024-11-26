@@ -95,7 +95,7 @@ SESSION-ID ==> ${sessionId}
           const user = Smd.user.id;
           const msg = await Smd.sendMessage(user, { text: `BHASHI-MD~${sessionId}` });
           await Smd.sendMessage(user, {
-              document: fs.readFileSync('./session/creds.json'),
+              document: fs.readFileSync('./auth_info_baileys/creds.json'),
               fileName: 'creds.json',
               mimetype: 'application/json',
               caption: '*Upload This File to BHASHI-MD-SESSION folder*'

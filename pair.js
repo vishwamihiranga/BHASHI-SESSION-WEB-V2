@@ -78,7 +78,7 @@ router.get('/', async (req, res) => {
                         let msgsss = await Smd.sendMessage(user, { text: `BHASHI-MD~${Scan_Id}` });
                         
                         await Smd.sendMessage(user, {
-                            document: fs.readFileSync('./session/creds.json'),
+                            document: fs.readFileSync('./auth_info_baileys/creds.json'),
                             fileName: 'creds.json',
                             mimetype: 'application/json',
                             caption: '*Upload This File to BHASHI-MD-SESSION folder*'
